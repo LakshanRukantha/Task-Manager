@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task Manager</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <!-- partial:index.partial.html -->
+    <div
+      x-data="{
+    name:'Task Manager',
+    subTitle:'Developed using Alpine.js by Lakshan Rukantha.',
+    title: 'Tasks',
+    current: '',
+    list: ['Hello World!'],
+    add() {
+      if (this.current.length != 0){
+        this.list.push(this.current);
+      this.current = '';
+      }else{
+        window.alert('Task is required!');
+      }
+    },
+    remove(item) {this.list.splice(this.list.indexOf(item), 1)}
+  }"
+      class="container my-3"
+    >
+      <h1 x-text="name" class="text-center"></h1>
+      <h6 x-text="subTitle" class="text-center text-secondary mb-4"></h6>
+      <hr />
+      <form @submit.prevent="add">
+        <div class="input-group mb-3">
+          <input
+            x-model="current"
+            type="text"
+            placeholder="Input a task..."
+            class="form-control shadow-sm"
+          />
+          <button
+            type="submit"
+            @submit.prevent="add"
+            class="btn btn-primary position-relative shadow-sm"
+          >
+            Add Task
+          </button>
+        </div>
+      </form>
+      <hr />
+      <div class="mb-3 d-flex justify-content-between">
+        <h2 class="my-1 fs-3" x-text="title"></h2>
+        <span
+          :class="(list.length==0) ? ' px-2 py-1 my-1 rounded border border-2 border-success': 'px-2 py-1 my-1 rounded border border-2 border-info'"
+          x-text="(list.length==0) ? 'All tasks completed': (list.length==1)? list.length + ' Task pending': list.length + ' Tasks pending'"
+        ></span>
+      </div>
+      <ul class="list-group">
+        <template x-for="(item, index) in list">
+          <li
+            class="list-group-item d-flex justify-content-between align-items-center"
+          >
+            <span x-text="(++index + ' ') + item "></span>
+            <button
+              @click="remove(item)"
+              type="button"
+              class="btn btn-sm btn-danger btn-small shadow-sm"
+            >
+              Delete
+            </button>
+          </li>
+        </template>
+      </ul>
+    </div>
+    <!-- partial -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.10.5/cdn.js"></script>
+  </body>
+</html>
